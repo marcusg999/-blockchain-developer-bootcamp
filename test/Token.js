@@ -3,10 +3,15 @@ const { ethers } = require('hardhat');
 
 describe('Token', () => {
 let token 
+let accounts
+let deployer
 
   beforeEach(async ()=> {
     const Token = await ethers.getContractFactory('Token')
     token = await Token.deploy('Dapp University', 'DAPP', '1000000')
+  
+    accounts = await ethers.getSigners()
+    deployer = accounts[0]
   })
 
   describe('Deployment', () =>{
@@ -23,8 +28,11 @@ let token
     it('has correct decimals', async() => {
       const decimals = expect(await token.decimals()).to.equal('18')
     })
-    it('has correct Total Supply', async() => {
+    it('has correct total Supply', async() => {
       expect(await token.totalSupply()).to.equal('1000000000000000000000000')
+    })
+    it('has correct total deployer', async() => {
+      expect(await token.balanceOf(deployer.address)).to.equal(totalSupply)
     })
   })
   
